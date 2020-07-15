@@ -4,7 +4,6 @@
 import os
 def log_reader(func):
     def wrapper(*args):
-        func(*args)
         folder = func(*args)
         for file in folder:
             if file.endswith(".log"):
