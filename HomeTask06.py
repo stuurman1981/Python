@@ -5,7 +5,7 @@ def words_count(func):
     def wrapper(*args):
         file_name = args[0].split('/')[-1]
         result = func(*args)
-        text = result.replace(",", "").replace(".", "").replace("?", "").replace("!", "").split(' ')
+        text = result.split(' ')
         count = 0
         for _ in text:
             count += 1
