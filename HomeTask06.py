@@ -3,12 +3,10 @@
 import os
 def words_count(func):
     def wrapper(*args):
-        file_name = args[0].split('/')[-1]
+        file_name = args[0].split(os.sep)[-1]
         result = func(*args)
         text = result.split(' ')
-        count = 0
-        for _ in text:
-            count += 1
+        count = len(text)
         print(f'File: {file_name} has {count} words.\n')
         return result
     return wrapper
