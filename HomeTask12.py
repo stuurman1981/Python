@@ -108,8 +108,7 @@ class Game:
             for i in range(10):
                 print(f"{' '.join(self.player2_own[i])}\t\t{' '.join(self.player2_enemy[i])}")
         print(f'Turn of player {active_player}')
-        self.x = int(input('Please enter coordinate x from 0 to 9 >>>'))
-        self.y = int(input('Please enter coordinate y from 0 to 9 >>>'))
+        self.input_coords()
         return self.x, self.y
 
 
@@ -134,6 +133,15 @@ class Game:
                 return self.player2_enemy, self.active_player
 
 
+    def input_coords(self):
+        try:
+            self.x = int(input('Please enter coordinate x from 0 to 9 >>>'))
+            self.y = int(input('Please enter coordinate y from 0 to 9 >>>'))
+        except ValueError:
+            print('Inserted values are not coordinates')
+            self.input_coords()
+
+
     def run(self):
         self.player_field(self.player1)
         self.player_field(self.player2)
@@ -150,8 +158,7 @@ class Game:
                     exit(0)
             else:
                 print('Incorrect entry')
-                self.x = int(input('Please enter coordinate x from 0 to 9 >>>'))
-                self.y = int(input('Please enter coordinates y from 0 to 9 >>>'))
+                self.input_coords()
 
 
 a = Game()
