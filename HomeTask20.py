@@ -6,8 +6,7 @@ async def request_data(url):
     # use aiohttp.request (as a context manager) to get data from url
     # then return data as str
     async with aiohttp.request('GET', url) as resp:
-        data = await resp.text()
-        return data
+        return await resp.text()
 
 
 async def get_reddit_top(subreddit):
@@ -25,7 +24,18 @@ async def get_reddit_top(subreddit):
     #     }
     # }
     pattern = f'https://www.reddit.com/r/{subreddit}/top.json?sort=top&t=day&limit=5'
-    parsed_json = json.dumps(request_data(pattern))
+    parsed_json = json.loads(await request_data(pattern))
+    top_posts = {}
+    posts = {}
+    for post in parsed_json['data']['children']:
+        post_title = post['data']['title']
+        post_score = post['data']['score']
+        post_link = f"https://www.reddit.com{post['data']['permalink']}"
+
+        posts[post_title] = {'score': post_score, 'link': post_link}
+
+    top_posts[subreddit] = posts
+    return top_posts
 
 
 async def main():
@@ -36,7 +46,7 @@ async def main():
         "compsci",
         "microbork"
     }
-    res = await asyncio.gather(*(get_reddit_top(r) for r in reddits))
+    return await asyncio.gather(*(get_reddit_top(r) for r in reddits))
 
 
 asyncio.run(main())
